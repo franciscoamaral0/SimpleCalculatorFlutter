@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 
 import 'display.dart';
 import 'number_button.dart';
+import 'operadorButton.dart';
 
 const appName = "Simple Calculator";
 void main() => runApp(const App());
@@ -32,19 +33,42 @@ class Calculator extends StatefulWidget {
 }
 
 class _CalculatorState extends State<Calculator> {
+  static const operadores = ["x", "+", "-"];
   String display = "0";
+  String operador = "";
   String firstNumber = "";
+  String secondNumber = "";
+
   void insert(String char) {
-    firstNumber += char;
+    if (operadores.contains(char)) {
+      operador = char;
+    } else {
+      if (operador.isEmpty) {
+        firstNumber += char;
+      } else {
+        secondNumber += char;
+      }
+    }
+
     setState(() {
-      display = firstNumber;
+      if (operador.isEmpty) {
+        display = firstNumber;
+      } else {
+        if (secondNumber.isEmpty) {
+          display = "$firstNumber $operador";
+        } else {
+          display = "$firstNumber $operador $secondNumber";
+        }
+      }
     });
   }
 
   void clearCalculator() {
     firstNumber = "";
+    operador = "";
+    secondNumber = "";
     setState(() {
-      display = firstNumber;
+      display = "0";
     });
   }
 
@@ -82,6 +106,7 @@ class _CalculatorState extends State<Calculator> {
                 NumberButton(number: "7", onNumberPressed: insert),
                 NumberButton(number: "8", onNumberPressed: insert),
                 NumberButton(number: "9", onNumberPressed: insert),
+                OperadorButton(operador: "x", operadorOnPressed: insert)
               ],
             ),
           ),
@@ -92,6 +117,7 @@ class _CalculatorState extends State<Calculator> {
                 NumberButton(number: "6", onNumberPressed: insert),
                 NumberButton(number: "5", onNumberPressed: insert),
                 NumberButton(number: "4", onNumberPressed: insert),
+                OperadorButton(operador: "-", operadorOnPressed: insert)
               ],
             ),
           ),
@@ -102,6 +128,7 @@ class _CalculatorState extends State<Calculator> {
                 NumberButton(number: "3", onNumberPressed: insert),
                 NumberButton(number: "2", onNumberPressed: insert),
                 NumberButton(number: "1", onNumberPressed: insert),
+                OperadorButton(operador: "+", operadorOnPressed: insert)
               ],
             ),
           ),
