@@ -14,6 +14,7 @@ class NumberButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return Expanded(
       child: ElevatedButton(
+        style: ElevatedButton.styleFrom(shape: const BeveledRectangleBorder()),
         onPressed: () => onNumberPressed(number),
         child: Text(number),
       ),
